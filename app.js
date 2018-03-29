@@ -5,13 +5,12 @@ const express 		        = require("express"),
     app 			          = express(),
     bodyParser  	      = require("body-parser"),
     mongoose 		        = require('mongoose'),
-    jwt				          = require('jsonwebtoken'),
     tokenMw 		        = require('./authentication/tokenController'),
     router 			        = express.Router(),
     auths 			        = require('./authentication/auth.routes'),
     users               = require('./users/user.routes'),
-    allowCrossDomain    = require('./utils/crossDomain');
-
+    allowCrossDomain    = require('./utils/crossDomain'),
+    restaurants         = require('./restaurants/restaurant.routes');
 
 //Connection to BD
 mongoose.connect(env.database, function (err, res){
@@ -21,16 +20,13 @@ mongoose.connect(env.database, function (err, res){
 	}
 });
 
-
-
 // Middlewares
 app.use(bodyParser.json());
 app.use(allowCrossDomain.allowCrossDomain);
-
-//API Authenticate -> Important goes here for avoid token verification
 app.use('/', auths);
 app.use(tokenMw.tokenVerify);
 app.use('/users', users);
+app.use('/restaurants', restaurants);
 
 //Handle errors
 app.use(function (err, req, res, next) {

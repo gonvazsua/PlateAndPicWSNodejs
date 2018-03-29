@@ -28,7 +28,7 @@ exports.signup = function(req, response) {
 	const parsedData = decodeAndParsePayLoad(req.body.payload);
 	User.findOne({$or: [ {email: parsedData.email}, {username: parsedData.username}]})
 		.exec((err, user) => {
-			if (user) response.json(responseUtils.buildErrorMessage('El usuario o email ya están registrados'));
+			if (user) response.status(200).jsonp(responseUtils.buildErrorMessage('El usuario o email ya están registrados'));
 			else {
 				userCtrl.addUser(parsedData, response, function(err, user) {
 					if(err || !user) response.status(200).jsonp(responseUtils.buildErrorMessage('Error al registrar'));
