@@ -74,3 +74,18 @@ exports.save = function(user) {
         return user;
     });
 }
+
+exports.updatePassword = function(req, res) {
+	const parsedData = decodeAndParsePayLoad(req.body.passwords);
+	User.findById(req.params.id, function(err, user){
+		if(cryptUtils.matchPasswords(parsedData.lastPassword, user.password)){
+			user.password = cryptUtils.encodePassword(parsedData.newPassword)
+			user.save((err, user) => res.status(200).jsonp(user))
+		} else res.status(200).jsonp(responseUtils.buildErrorMessage('Las passwords no coinciden'))
+	})
+}
+
+const decodeAndParsePayLoad = function(passwords) {
+	const decoded = cryptUtils.decodeBase64(passwords);
+	return JSON.parse(decoded);
+};

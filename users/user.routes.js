@@ -1,8 +1,11 @@
 var express 	= require("express"),
 	users 	    = express.Router(),
-	UserCtrl	= require('./user.controller');
+	UserCtrl	= require('./user.controller')
 
 users.route('/')	
-	.get(UserCtrl.findAll);
+	.get(UserCtrl.findAll)
 
-module.exports = users;
+users.route('/updatePassword/:id')
+	.post(UserCtrl.updatePassword)
+
+module.exports = users

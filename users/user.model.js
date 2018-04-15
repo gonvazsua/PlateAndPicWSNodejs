@@ -10,6 +10,8 @@ var userSchema 	= new Schema({
   status            : { type: Number },
   role              : { type: Number },
   lastLogin         : { type: Date },
+  followersNumber   : { type: Number },
+  platePicturesNumber : { type: Number },
   picture           : { data: Buffer, contentType: String },
   restaurants       : [{ type: Schema.Types.ObjectId, ref: 'Restaurant' }],
   city              : { type: Schema.Types.ObjectId, ref: 'City' },
